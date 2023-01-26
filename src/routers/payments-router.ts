@@ -1,9 +1,8 @@
 import { Router } from "express";
 
-const ticketsRouter  = Router();
+const paymentsRouter  = Router();
 
-ticketsRouter.get("/tickets/types");
-ticketsRouter.get("/tickets");
-ticketsRouter.post("tickets");
+paymentsRouter.get("/payments");
+paymentsRouter.post("payments/process");
 
-export { ticketsRouter };
+export { paymentsRouter };
