@@ -21,18 +21,20 @@ export async function getTickets(req: AuthenticatedRequest, res: Response) {
         const tickets = await getTicketsService(userId);
         return res.status(httpStatus.OK).send(tickets);
     } catch (error) {
-        return res.send(httpStatus.NOT_FOUND).send({})
+        return res.status(httpStatus.NOT_FOUND).send({})
     }
 }
 
 export async function reserveTickets(req: AuthenticatedRequest, res: Response) {
     const userId = req.userId;
+    const typeId = req.body.ticketTypeId;
+    if (!req.body.ticketTypeId) return res.sendStatus(httpStatus.BAD_REQUEST)
 
     try {
-        const ticket = await postMyTicket(userId)
-        return res.status(httpStatus.OK).send(ticket);
+        const ticket = await postMyTicket(userId, typeId);
+        return res.status(httpStatus.CREATED).send(ticket);
     } catch(error) {
-        return res.send(httpStatus.NOT_FOUND).send({})
+        return res.status(httpStatus.NOT_FOUND)
     }
     
 }
