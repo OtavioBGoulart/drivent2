@@ -1,6 +1,8 @@
-import { getAllTypesTickets, getTicketsService } from "@/services/tickets-service";
+import { AuthenticatedRequest } from "@/middlewares";
+import { getAllTypesTickets, getTicketsService, postMyTicket } from "@/services/tickets-service";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
+
 
 export async function getTicketsTypes(req: Request, res: Response) {
 
@@ -12,14 +14,26 @@ export async function getTicketsTypes(req: Request, res: Response) {
     }
 }
 
-export async function getTickets(req: Request, res: Response) {
-    //const user = req.userId;
-
+export async function getTickets(req: AuthenticatedRequest, res: Response) {
+    const userId = req.userId;
+    
     try {
-        const tickets = await getTicketsService();
+        const tickets = await getTicketsService(userId);
         return res.status(httpStatus.OK).send(tickets);
     } catch (error) {
         return res.send(httpStatus.NOT_FOUND).send({})
     }
+}
+
+export async function reserveTickets(req: AuthenticatedRequest, res: Response) {
+    const userId = req.userId;
+
+    try {
+        const ticket = await postMyTicket(userId)
+        return res.status(httpStatus.OK).send(ticket);
+    } catch(error) {
+        return res.send(httpStatus.NOT_FOUND).send({})
+    }
+    
 }
 
