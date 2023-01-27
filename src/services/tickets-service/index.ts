@@ -7,3 +7,10 @@ export async function getAllTypesTickets() {
     if (!ticketsTypes) throw notFoundError();
     return ticketsTypes;
 }
+
+export async function getTicketsService() {
+
+    const tickets = await ticketsRepository.getAllTickets();
+    if (!tickets) throw notFoundError();
+    return tickets
+}
