@@ -16,10 +16,20 @@ export async function getTicket(req: AuthenticatedRequest, res: Response) {
     } catch (error) {
         console.log(error)
         if (error.name === "NotFoundError") {
-            return res.status(httpStatus.NOT_FOUND).send({})
+            return res.status(httpStatus.NOT_FOUND).send({error})
         }
         if (error.name === "UnauthorizedError") {
-            return res.status(httpStatus.UNAUTHORIZED).send({})
+            return res.status(httpStatus.UNAUTHORIZED).send({error})
         }
+    }
+}
+
+export async function sendPayment(req: AuthenticatedRequest, res: Response) {
+    
+    const id = req.userId;
+    try {
+        return res.sendStatus(httpStatus.OK)
+    } catch (error) {
+        console.log(error);
     }
 }
