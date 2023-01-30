@@ -7,7 +7,7 @@ async function getAllTicketsTypes() {
 }
 
 async function getAllTickets(userId: number) {
-    
+
     return await prisma.ticket.findFirst({
         where: {
             Enrollment: {
@@ -21,7 +21,7 @@ async function getAllTickets(userId: number) {
 }
 
 
-async function postTicket(id : number, typeId: number) {
+async function postTicket(id: number, typeId: number) {
 
     return await prisma.ticket.create({
         data: {
@@ -30,10 +30,10 @@ async function postTicket(id : number, typeId: number) {
             status: TicketStatus.RESERVED
         },
         include: {
-          TicketType: true  
+            TicketType: true
         }
     })
-    
+
 }
 
 export async function getMyCurrentTicket(ticketId: number) {
@@ -48,11 +48,44 @@ export async function getMyCurrentTicket(ticketId: number) {
     })
 }
 
+async function updateTicketStatus(ticketId: number) {
+
+    return await prisma.ticket.update({
+        where: { id: ticketId },
+        data: {
+            status: TicketStatus.PAID
+        }
+    })
+}
+
+async function getTicketById(id: number) {
+
+    return await prisma.ticket.findFirst({
+        where: { id }
+    })
+}
+
+async function getTicketByUserId(id: number, userId: number) {
+
+    return await prisma.ticket.findFirst({
+        where: {
+            AND: [
+                { id },
+                { Enrollment: { userId } }
+            ]
+        }
+
+    })
+}
+
 const ticketsRepository = {
     getAllTicketsTypes,
     getAllTickets,
     postTicket,
-    getMyCurrentTicket
+    getMyCurrentTicket,
+    updateTicketStatus,
+    getTicketById,
+    getTicketByUserId
 }
 
 export default ticketsRepository;
