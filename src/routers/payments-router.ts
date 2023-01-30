@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const paymentsRouter  = Router();
 
-paymentsRouter.get("/payments");
-paymentsRouter.post("payments/process");
+paymentsRouter.get("/");
+paymentsRouter.post("/process");
 
 export { paymentsRouter };

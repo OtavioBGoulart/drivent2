@@ -1,4 +1,5 @@
 import { prisma } from "@/config";
+import { TicketStatus } from "@prisma/client";
 
 async function getAllTicketsTypes() {
 
@@ -19,25 +20,17 @@ async function getAllTickets(userId: number) {
     })
 }
 
-async function getEnrollmentId(userId: number) {
 
-    return await prisma.enrollment.findFirst({
-        where: {
-            userId
-        },
-        select: {
-            id: true
-        }
-    })
-    
-}
 async function postTicket(id : number, typeId: number) {
 
     return await prisma.ticket.create({
         data: {
             ticketTypeId: typeId,
             enrollmentId: id,
-            status: "RESERVED"
+            status: TicketStatus.RESERVED
+        },
+        include: {
+          TicketType: true  
         }
     })
     
@@ -58,7 +51,6 @@ export async function getMyCurrentTicket(ticketId: number) {
 const ticketsRepository = {
     getAllTicketsTypes,
     getAllTickets,
-    getEnrollmentId,
     postTicket,
     getMyCurrentTicket
 }

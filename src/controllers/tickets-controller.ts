@@ -28,13 +28,16 @@ export async function getTickets(req: AuthenticatedRequest, res: Response) {
 export async function reserveTickets(req: AuthenticatedRequest, res: Response) {
     const userId = req.userId;
     const typeId = req.body.ticketTypeId;
-    if (!req.body.ticketTypeId) return res.sendStatus(httpStatus.BAD_REQUEST)
+    if (!req.body.ticketTypeId) return res.sendStatus(httpStatus.BAD_REQUEST);
 
     try {
         const ticket = await postMyTicket(userId, typeId);
         return res.status(httpStatus.CREATED).send(ticket);
     } catch(error) {
-        return res.status(httpStatus.NOT_FOUND)
+        if (error.name === "NotFoundError") {
+            return res.status(httpStatus.NOT_FOUND).send({});
+        }
+       
     }
     
 }

@@ -1,5 +1,7 @@
 import { notFoundError } from "@/errors";
+import enrollmentRepository from "@/repositories/enrollment-repository";
 import ticketsRepository from "@/repositories/tickets-repository";
+import { BAD_REQUEST } from "http-status";
 
 export async function getAllTypesTickets() {
 
@@ -11,19 +13,15 @@ export async function getAllTypesTickets() {
 export async function getTicketsService(userId: number) {
 
     const tickets = await ticketsRepository.getAllTickets(userId);
-    console.log("aaaa", tickets);
     if (!tickets) throw notFoundError();
     return tickets
 }
 
 export async function postMyTicket(userId: number, typeId: number) {
     
-    const { id } = await ticketsRepository.getEnrollmentId(userId);
+    const { id } = await enrollmentRepository.findWithAddressByUserId(userId);
     if (!id) throw notFoundError();
-    const ticketReserve = await ticketsRepository.postTicket(id, typeId);
-    const ticketId = ticketReserve.id
-    console.log("ticketTyype", ticketReserve);
-    const ticket = await ticketsRepository.getMyCurrentTicket(ticketId)
-    console.log("ticket",ticket);
+    const ticket = await ticketsRepository.postTicket(id, typeId);
+    if (!ticket) throw notFoundError();
     return ticket;
 }
