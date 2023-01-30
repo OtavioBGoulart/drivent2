@@ -16,7 +16,7 @@ export async function getTicketsTypes(req: Request, res: Response) {
 
 export async function getTickets(req: AuthenticatedRequest, res: Response) {
     const userId = req.userId;
-    
+
     try {
         const tickets = await getTicketsService(userId);
         return res.status(httpStatus.OK).send(tickets);
@@ -33,10 +33,11 @@ export async function reserveTickets(req: AuthenticatedRequest, res: Response) {
     try {
         const ticket = await postMyTicket(userId, typeId);
         return res.status(httpStatus.CREATED).send(ticket);
-    } catch(error) {
-            return res.status(httpStatus.NOT_FOUND).send({});
-       
+    } catch (error) {
+        console.log(error)
+        return res.status(httpStatus.NOT_FOUND).send({});
+
     }
-    
+
 }
 

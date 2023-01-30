@@ -28,9 +28,11 @@ export async function getTicket(req: AuthenticatedRequest, res: Response) {
 export async function sendPayment(req: AuthenticatedRequest, res: Response) {
     const body = req.body as PaymentType;
     const id = req.userId;
+    console.log(id)
+
     try {
         const payment = await sendPaymentService(body, id)
-        return res.sendStatus(httpStatus.OK).send(payment)
+        return res.status(httpStatus.OK).send(payment)
     } catch (error) {
         console.log(error)
         if (error.name === "NotFoundError") {

@@ -6,7 +6,8 @@ export const paymentSchema = joi.object({
         issuer: joi.string().required(),
         number: joi.number().required(),
         name: joi.string().required(),
-        expirationDate: joi.date().required(),
-        cvv: joi.number().required()
+        expirationDate: joi.string().required(),
+        cvv: joi.string().required()
     })
 })
+
